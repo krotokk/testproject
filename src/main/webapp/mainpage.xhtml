@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Main</title>
+</h:head>
+
+<h:body>
+    <h:form id="form">
+        <p:growl id="msgs" showDetail="true"/>
+        <p:remoteCommand name="updateDataTable" update="cars"/>
+        <p:dataTable id="cars"  var="c" value="#{dtEditView.cars}" editable="true" style="margin-bottom:20px" >
+            <f:facet name="header">
+                Database editing
+            </f:facet>
+            <p:ajax event="rowEdit" listener="#{dtEditView.onRowEdit}" update=":form:msgs" oncomplete="updateDataTable()"/>
+            <p:ajax event="rowEditCancel" listener="#{dtEditView.onRowCancel}" update=":form:msgs" oncomplete="updateDataTable()" />
+
+            <p:column headerText="Id">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{c.id}" /></f:facet>
+                    <f:facet name="input"><p:inputText id="modelInput" value="#{c.id}" style="width:96%" readonly="true" /></f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column headerText="Year">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{c.year}" /></f:facet>
+                    <f:facet name="input"><p:inputText value="#{c.year}" style="width:96%" label="Year"/></f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column headerText="Brand">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{c.model}" /></f:facet>
+                    <f:facet name="input">
+                        <h:selectOneMenu value="#{c.model}" style="width:100%">
+                            <f:selectItems value="#{dtEditView.models}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+                        </h:selectOneMenu>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column headerText="Color">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{c.color}" /></f:facet>
+                    <f:facet name="input">
+                        <h:selectOneMenu value="#{c.color}" style="width:100%">
+                            <f:selectItems value="#{dtEditView.colors}" var="color" itemLabel="#{color}" itemValue="#{color}" />
+                        </h:selectOneMenu>
+                    </f:facet>
+                </p:cellEditor>
+            </p:column>
+
+            <p:column headerText="Price">
+                <p:cellEditor>
+                    <f:facet name="output"><h:outputText value="#{c.price}" /></f:facet>
+                    <f:facet name="input"><p:inputText value="#{c.price}" style="width:96%" /></f:facet>
+                </p:cellEditor>
+            </p:column>
+            <p:column style="width:32px">
+                <p:rowEditor />
+            </p:column>
+            <p:column>
+                <f:facet name="header">Action</f:facet>
+                <p:commandLink value="Delete" action="#{dtEditView.deleteCar(c.id)}" oncomplete="updateDataTable()"/>
+            </p:column>
+        </p:dataTable>
+        <p:commandButton value="Insert" action="insert" ajax="true"/>
+    </h:form>
+</h:body>
+
+</html>

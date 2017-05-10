@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:c="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+<h:head>
+    <title>Insert</title>
+</h:head>
+
+<h:body>
+    <h:form id="insertForm">
+        <p:growl id="msg" showDetail="true" life="3000" />
+        <p:panel header="Insert" style="width: 900px;">
+
+        <h:panelGrid id="ins" columns="2">
+            <h:outputText value="Id: "/>
+            <p:inputText id="id" value="#{dataBaseCDI.car.id}"/>
+            <p:spacer></p:spacer>
+            <p:message for="id"></p:message>
+
+
+            <h:outputText value="Car: "/>
+            <h:selectOneMenu id="car" value="#{dataBaseCDI.car.model}" style="width:100%">
+                <f:selectItems value="#{dtEditView.models}" var="man" itemLabel="#{man}" itemValue="#{man}" />
+            </h:selectOneMenu>
+            <p:spacer/>
+            <p:message for="car"></p:message>
+
+            <h:outputText value="Year: "/>
+            <p:inputMask id="year" value="#{dataBaseCDI.car.year}" mask="9999"/>
+            <p:spacer/>
+            <p:message for="year"></p:message>
+
+            <h:outputText value="Color: "/>
+            <h:selectOneMenu id="color" value="#{dataBaseCDI.car.color}" style="width:100%">
+                <f:selectItems value="#{dtEditView.colors}" var="color" itemLabel="#{color}" itemValue="#{color}" />
+            </h:selectOneMenu>
+            <p:spacer/>
+            <p:message for="color"></p:message>
+
+            <h:outputLabel for="dd" value="Price:"/>
+            <p:inputText id="dd" value="#{dataBaseCDI.car.price}" converterMessage="Cannot convert to double.">
+                <f:validateDoubleRange minimum="0" maximum="100000" />
+            </p:inputText>
+            <p:spacer/>
+            <p:message for="dd" />
+
+            <p:commandButton value="Insert" action="#{dataBaseCDI.insertInDB}" update="ins" ajax="true"/>
+            <p:spacer/>
+            <p:commandButton value="Back" action="mainpage" ajax="true"/>
+        </h:panelGrid>
+        </p:panel>
+    </h:form>
+</h:body>
+
+</html>
